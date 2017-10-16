@@ -11,12 +11,12 @@ import Router from './src/Router';
 class App extends Component {
     componentWillMount() {
         var config = {
-            apiKey: "AIzaSyCc0r18pWi0kIgyPvxp3dopfl-MJS1Z2ZM",
-            authDomain: "photorank-5eb33.firebaseapp.com",
-            databaseURL: "https://photorank-5eb33.firebaseio.com",
-            projectId: "photorank-5eb33",
-            storageBucket: "",
-            messagingSenderId: "627041627028"
+              apiKey: "AIzaSyCc0r18pWi0kIgyPvxp3dopfl-MJS1Z2ZM",
+              authDomain: "photorank-5eb33.firebaseapp.com",
+              databaseURL: "https://photorank-5eb33.firebaseio.com",
+              projectId: "photorank-5eb33",
+              storageBucket: "photorank-5eb33.appspot.com",
+              messagingSenderId: "627041627028"
             };
             firebase.initializeApp(config);
     }

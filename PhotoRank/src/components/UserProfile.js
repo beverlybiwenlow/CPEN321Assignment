@@ -1,37 +1,39 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ListView } from 'react-native';
+import { connect } from 'react-redux';
 
 import PostItem from './PostItem';
+import FeedList from './FeedList';
+import { fetchProfile, fetchUserPosts } from '../actions';
 
 class UserProfile extends Component {
-    renderPostItems() {
-        return dummy.map((image) => {
-            return <PostItem image={image} key={image.imageId}/>;
-        });
+    componentWillMount() {
+        this.props.fetchUserPosts();
+        this.props.fetchProfile();
+    }
+
+    renderUserHeader() {
+        const displayName = this.props.userProfile.displayName || "";
+        return (
+            <Text> {displayName} </Text>
+        )
     }
 
     render() {
+        const { userProfile } = this.props;
         return (
             <View>
-                {this.renderPostItems()}
+                {this.renderUserHeader()}
+                <FeedList />
             </View>
         );
     }
 }
 
-const dummy = [
-    {
-        imageId: 1,
-        caption: 'Profile 1'
-    },
-    {
-        imageId: 2,
-        caption: 'Profile 2'
-    },
-    {
-        imageId: 3,
-        caption: 'Profile 3'
-    }
-]
+const mapStateToProps = (state) => {
+    const userProfile = state.user;
 
-export default UserProfile;
+    return { userProfile };
+}
+
+export default connect(mapStateToProps, { fetchProfile, fetchUserPosts })(UserProfile);

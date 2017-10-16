@@ -4,16 +4,18 @@ import { View, Text } from 'react-native';
 import PostItem from './PostItem';
 
 class UserFeed extends Component {
-    renderPostItems() {
-        return dummy.map((image) => {
-            return <PostItem image={image} key={image.imageId}/>;
-        });
-    }
-    
+    // renderPostItems() {
+    //     return dummy.map((image) => {
+    //         return <PostItem post={image} key={image.imageId}/>;
+    //     });
+    // }
+
     render() {
         return (
             <View>
-                {this.renderPostItems()}
+                <Text>
+                    Placeholder
+                </Text>
             </View>
         );
     }

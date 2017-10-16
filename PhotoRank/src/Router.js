@@ -4,6 +4,7 @@ import { Scene, Router, Actions, Stack } from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
 import UserFeed from './components/UserFeed';
 import UserProfile from './components/UserProfile';
+import UserSettings from './components/UserSettings';
 import TabIcon from './components/common';
 
 const RouterComponent =() => {
@@ -17,25 +18,25 @@ const RouterComponent =() => {
                             component={UserFeed}
                             title="Feed"
                             icon={TabIcon}
-                            tabStyle={styles.tabStyle}
                         />
                         <Scene
                             key="userProfile"
                             component={UserProfile}
                             title="Profile"
-                            tabStyle={styles.tabStyle}
+                            rightTitle="Settings"
+                            onRight={()=> Actions.push("userSettings")}
                             initial
+                        />
+                        <Scene
+                            key="userSettings"
+                            component={UserSettings}
+                            title="Settings"
+                            back
                         />
                     </Scene>
                 </Scene>
         </Router>
     );
 }
-
-const styles = {
-    tabStyle: {
-        fontSize: 30
-    }
-};
 
 export default RouterComponent;

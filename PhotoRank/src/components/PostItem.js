@@ -5,12 +5,28 @@ import { Card, CardSection } from './common';
 
 class PostItem extends Component {
     render() {
-        const { image } = this.props
+        console.log('Post Item', this.props.post);
+        const { post } = this.props
         return (
             <Card>
                 <CardSection>
                     <Text>
-                        { image.caption }
+                        { "User: " + post.displayName }
+                    </Text>
+                </CardSection>
+                <CardSection>
+                    <Text>
+                        { 'Caption: ' + post.caption }
+                    </Text>
+                </CardSection>
+                <CardSection>
+                    <Text>
+                        { 'Likes: ' + post.likeCount }
+                    </Text>
+                </CardSection>
+                <CardSection>
+                    <Text>
+                        {'Url: ' + post.url}
                     </Text>
                 </CardSection>
             </Card>
