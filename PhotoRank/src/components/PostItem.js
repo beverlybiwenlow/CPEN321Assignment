@@ -5,7 +5,6 @@ import { Card, CardSection } from './common';
 
 class PostItem extends Component {
     render() {
-        console.log('Post Item', this.props.post);
         const { thumbnailStyle, headerContentStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle } = styles;
         const { post } = this.props
         return (
