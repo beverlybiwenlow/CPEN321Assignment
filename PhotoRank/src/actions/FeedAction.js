@@ -55,8 +55,13 @@ export const fetchPosts = () => {
         dispatch({ type: RESET_FEED });
         var topPosts = firebase.database().ref('/posts').orderByChild('likeCount').limitToFirst(50);
         topPosts.on('value', snapshots => {
-            var results = snapshots.val().filter((post) => post.user !== undefined);
-            dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: results});
+            Object.filter = (obj, predicate) =>
+            Object.keys(obj)
+            .filter( key => predicate(obj[key]) )
+            .reduce( (res, key) => (res[key] = obj[key], res), {} );
+            var results = snapshots.val();
+            var filteredResults = Object.filter(results, result => result.user !== undefined);
+            dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: filteredResults });
         });
     };
 };
