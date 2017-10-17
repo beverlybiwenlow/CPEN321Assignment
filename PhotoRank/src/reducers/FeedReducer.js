@@ -1,5 +1,5 @@
 import {
-    FETCH_USER_POST,
+    RESET_FEED,
     FETCH_USER_POSTS_SUCCESS
 } from '../actions/types';
 
@@ -10,8 +10,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE , action) => {
     switch(action.type) {
-        case FETCH_USER_POST:
-            return {...state, clean: true};
+        case RESET_FEED:
+            return INITIAL_STATE;
         case FETCH_USER_POSTS_SUCCESS:
             return {...state, posts: action.payload, clean: false};
         default:

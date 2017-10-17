@@ -7,4 +7,4 @@ export const LOGIN_USER = 'login_user';
 export const CREATE_PROFILE_SUCCESS = 'create_profile_success';
 export const FETCH_PROFILE_SUCCESS = 'fetch_profile_success';
 export const FETCH_USER_POSTS_SUCCESS = 'fetch_user_posts_success';
-export const FETCH_USER_POST = 'fetch_user_post';
+export const RESET_FEED = 'reset_feed';

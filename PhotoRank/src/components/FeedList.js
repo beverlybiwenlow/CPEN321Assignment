@@ -4,8 +4,6 @@ import { ListView, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import PostItem from './PostItem';
-import { fetchUserPosts } from '../actions';
-import { fetchFeedPosts } from '../actions';
 
 class FeedList extends Component {
     componentWillMount() {
@@ -17,7 +15,6 @@ class FeedList extends Component {
     }
 
     createDataSource({ feed }) {
-        console.log('create data source', feed);
         const ds = new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2
         });
@@ -48,7 +45,6 @@ class FeedList extends Component {
     }
 
     render() {
-        console.log('list props', this.props);
         const { feed, clean } = this.props;
         return feed.length === 0 && clean === false ? this.renderEmptyFeed() : this.renderList();
     }
@@ -62,4 +58,4 @@ const mapStateToProps = (state) => {
     return { feed, clean: state.feed.clean };
 }
 
-export default connect(mapStateToProps, { fetchUserPosts })(FeedList);
+export default connect(mapStateToProps)(FeedList);
