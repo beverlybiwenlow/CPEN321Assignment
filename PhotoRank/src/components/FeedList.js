@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import PostItem from './PostItem';
 import { fetchUserPosts } from '../actions';
+import { fetchFeedPosts } from '../actions';
 
 class FeedList extends Component {
     componentWillMount() {

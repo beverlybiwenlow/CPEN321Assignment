@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
 import PostItem from './PostItem';
+import FeedList from './FeedList';
 
 class UserFeed extends Component {
     // renderPostItems() {
@@ -13,9 +14,7 @@ class UserFeed extends Component {
     render() {
         return (
             <View>
-                <Text>
-                    Placeholder
-                </Text>
+                <FeedList />
             </View>
         );
     }

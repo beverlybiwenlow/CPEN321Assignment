@@ -1,13 +1,42 @@
 import React, { Component } from 'react';
-import { Text, View, Image } from 'react-native';
-
+import { Text, View, Image, Button, Alert} from 'react-native';
+import firebase from 'firebase';
 import { Card, CardSection } from './common';
 
 class PostItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {liked: false};
+}
+
+onButtonPress = () => {  
+  
+  // alert(this.props.liked);
+  alert(this.props.post.likeCount);
+  if(this.state.liked){
+    firebase.database().ref('posts/' + this.props.post.uid).update({
+      likeCount: this.props.post.likeCount - 1
+    });
+  } else{
+    firebase.database().ref('posts/' + this.props.post.uid).update({
+      likeCount: this.props.post.likeCount + 1
+    });
+  }
+  
+
+  this.setState({
+    liked: !(this.state.liked)
+  });
+
+}
+
+
     render() {
         console.log('Post Item', this.props.post);
-        const { thumbnailStyle, headerContentStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle } = styles;
+        console.log(this.props);
+        const { thumbnailStyle, headerContentStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeButtonStyle } = styles;
         const { post } = this.props
+        let toggle = this.state.liked ? 'UNDO LIKE' : 'CLICK TO LIKE';
         return (
             <Card>
                 <CardSection>
@@ -22,7 +51,12 @@ class PostItem extends Component {
                   </View>
                 </CardSection>
                 <CardSection>
-                  <Image style={imageStyle} source={{ uri: "https://iso.500px.com/wp-content/uploads/2014/04/20482.jpg" }} />
+                  <Image style={imageStyle} source={{ uri: post.url }} />
+                </CardSection>
+                <CardSection>
+                  <View>
+                  <Button style={likeButtonStyle} onPress={this.onButtonPress} title={toggle}></Button>
+                  </View>
                 </CardSection>
                 <CardSection>
                   <View style = {footerContentStyle}>
@@ -68,6 +102,11 @@ const styles = {
     height: 300,
     flex: 1,
     width: null
+  },
+  likeButtonStyle: {
+    height: 25,
+    fontSize: 100,
+    color:'coral'
   }
 };
 
