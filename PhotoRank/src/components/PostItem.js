@@ -6,37 +6,61 @@ import { Card, CardSection } from './common';
 class PostItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {liked: false};
+    const { currentUser } = firebase.auth();
+    this.state = {liked: this.props.post.likers[currentUser.uid], likeCountFromDB: this.props.post.likeCount};
+    // this.state = {liked: false, likeCountFromDB: this.props.post.likeCount};
+
+    console.log(this.state.liked);
 }
 
 onButtonPress = () => {  
-  
-  // alert(this.props.liked);
-  alert(this.props.post.likeCount);
+  const { currentUser } = firebase.auth();  
+  var likeCountFromDB;
+  var likeCountRef = firebase.database().ref('posts/' + this.props.post.uid + '/likeCount');
+  likeCountRef.on('value', function(snapshot) {
+    likeCountFromDB = snapshot.val();
+  });
   if(this.state.liked){
     firebase.database().ref('posts/' + this.props.post.uid).update({
-      likeCount: this.props.post.likeCount - 1
+      likeCount: (this.state.likeCountFromDB - 1)
     });
+    firebase.database().ref('posts/' + this.props.post.uid + '/likers/').set({[currentUser.uid] : false});
+    
   } else{
     firebase.database().ref('posts/' + this.props.post.uid).update({
-      likeCount: this.props.post.likeCount + 1
+      likeCount: (this.state.likeCountFromDB + 1)
     });
+    firebase.database().ref('posts/' + this.props.post.uid + '/likers/').set({[currentUser.uid] : true});
+    
   }
   
-
   this.setState({
-    liked: !(this.state.liked)
-  });
+    liked: !(this.state.liked),
+    likeCountFromDB: likeCountFromDB
+  })
 
 }
 
+changeLikeState = (userLiked) => {
+  this.setState({liked: userLiked})
+}
 
     render() {
-        console.log('Post Item', this.props.post);
+        // console.log('Post Item', this.props.post);
         console.log(this.props);
-        const { thumbnailStyle, headerContentStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeButtonStyle } = styles;
+        const { thumbnailStyle, headerContentStyle, captionStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle } = styles;
         const { post } = this.props
+        const { currentUser } = firebase.auth();
+        
+        // console.log(this.props.post.likers[currentUserID]);
         let toggle = this.state.liked ? 'UNDO LIKE' : 'CLICK TO LIKE';
+        // var likedRef = firebase.database().ref('posts/' + this.props.post.uid + '/likers/' + currentUser.uid);
+        // var userLiked;
+        // likedRef.on('value', function(snapshot) {
+        //   userLiked = snapshot.val();
+        // });
+        // this.changeLikeState(userLiked);
+
         return (
             <Card>
                 <CardSection>
@@ -54,16 +78,17 @@ onButtonPress = () => {
                   <Image style={imageStyle} source={{ uri: post.url }} />
                 </CardSection>
                 <CardSection>
-                  <View>
+                  <View flexDirection="row" alignItems="center">
                   <Button style={likeButtonStyle} onPress={this.onButtonPress} title={toggle}></Button>
+                  <Text style={likeCountStyle}>
+                        { 'Likes: ' + this.state.likeCountFromDB }
+                    </Text>
                   </View>
                 </CardSection>
                 <CardSection>
                   <View style = {footerContentStyle}>
-                    <Text>
-                        { 'Likes: ' + post.likeCount }
-                    </Text>
-                    <Text>
+                    
+                    <Text style={captionStyle}>
                         { 'Caption: ' + post.caption }
                     </Text>
                     <Text>
@@ -107,6 +132,14 @@ const styles = {
     height: 25,
     fontSize: 100,
     color:'coral'
+  },
+  likeCountStyle: {
+    fontSize: 30,
+    color: 'coral'
+  },
+  captionStyle: {
+    fontSize: 20,
+    color: 'green'
   }
 };
 
