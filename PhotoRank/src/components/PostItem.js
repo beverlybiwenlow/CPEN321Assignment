@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, Image, Button, Alert} from 'react-native';
 import firebase from 'firebase';
 import { Card, CardSection } from './common';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class PostItem extends Component {
   constructor(props) {
