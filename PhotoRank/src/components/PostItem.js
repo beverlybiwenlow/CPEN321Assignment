@@ -13,8 +13,8 @@ class PostItem extends Component {
     console.log(this.state.liked);
 }
 
-onButtonPress = () => {  
-  const { currentUser } = firebase.auth();  
+onButtonPress = () => {
+  const { currentUser } = firebase.auth();
   var likeCountFromDB;
   var likeCountRef = firebase.database().ref('posts/' + this.props.post.uid + '/likeCount');
   likeCountRef.on('value', function(snapshot) {
@@ -25,20 +25,19 @@ onButtonPress = () => {
       likeCount: (this.state.likeCountFromDB - 1)
     });
     firebase.database().ref('posts/' + this.props.post.uid + '/likers/').set({[currentUser.uid] : false});
-    
-  } else{
+
+  } else {
     firebase.database().ref('posts/' + this.props.post.uid).update({
       likeCount: (this.state.likeCountFromDB + 1)
     });
     firebase.database().ref('posts/' + this.props.post.uid + '/likers/').set({[currentUser.uid] : true});
-    
+
   }
-  
+
   this.setState({
     liked: !(this.state.liked),
     likeCountFromDB: likeCountFromDB
   })
-
 }
 
 changeLikeState = (userLiked) => {
@@ -48,10 +47,10 @@ changeLikeState = (userLiked) => {
     render() {
         // console.log('Post Item', this.props.post);
         console.log(this.props);
-        const { thumbnailStyle, headerContentStyle, captionStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle } = styles;
+        const { thumbnailStyle, headerContentStyle, captionStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle, urlTextStyle } = styles;
         const { post } = this.props
         const { currentUser } = firebase.auth();
-        
+
         // console.log(this.props.post.likers[currentUserID]);
         let toggle = this.state.liked ? 'UNDO LIKE' : 'CLICK TO LIKE';
         // var likedRef = firebase.database().ref('posts/' + this.props.post.uid + '/likers/' + currentUser.uid);
@@ -71,7 +70,9 @@ changeLikeState = (userLiked) => {
                     <Text style = {headerTextStyle}>
                         { "User: " + post.displayName }
                     </Text>
-                    <Text>Company name</Text>
+                    <Text style = {urlTextStyle}>
+                        {'Url: ' + post.url}
+                    </Text>
                   </View>
                 </CardSection>
                 <CardSection>
@@ -87,13 +88,10 @@ changeLikeState = (userLiked) => {
                 </CardSection>
                 <CardSection>
                   <View style = {footerContentStyle}>
-                    
                     <Text style={captionStyle}>
                         { 'Caption: ' + post.caption }
                     </Text>
-                    <Text>
-                        {'Url: ' + post.url}
-                    </Text>
+
                   </View>
                 </CardSection>
             </Card>
@@ -104,7 +102,8 @@ changeLikeState = (userLiked) => {
 const styles = {
   headerContentStyle: {
     flexDirection: 'column',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    flex: 1
   },
   footerContentStyle: {
     flexDirection: 'column',
@@ -113,9 +112,14 @@ const styles = {
   headerTextStyle: {
     fontSize: 18
   },
+  urlTextStyle: {
+    flex: 1,
+    flexWrap: 'wrap'
+  },
   thumbnailStyle: {
     height: 50,
-    width: 50
+    width: 50,
+    borderRadius: 25
   },
   thumbnailContainerStyle: {
     justifyContent: 'center',

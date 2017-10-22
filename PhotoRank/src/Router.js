@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm';
 import UserFeed from './components/UserFeed';
 import UserProfile from './components/UserProfile';
 import UserSettings from './components/UserSettings';
+import UploadPictureTest from './components/UploadPictureTest';
 
 const RouterComponent =() => {
     return (
@@ -29,6 +30,12 @@ const RouterComponent =() => {
                             key="userSettings"
                             component={UserSettings}
                             title="Settings"
+                            back
+                        />
+                        <Scene
+                            key="uploadPicture"
+                            component={UploadPictureTest}
+                            title="Upload Picture"
                             back
                         />
                     </Scene>
