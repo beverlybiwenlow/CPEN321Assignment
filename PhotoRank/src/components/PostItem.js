@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, Button, Alert} from 'react-native';
+import { Text, View, Image, Button, Alert, TouchableOpacity} from 'react-native';
 import firebase from 'firebase';
 import { Card, CardSection } from './common';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -48,12 +48,13 @@ changeLikeState = (userLiked) => {
     render() {
         // console.log('Post Item', this.props.post);
         console.log(this.props);
-        const { thumbnailStyle, headerContentStyle, captionStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle, urlTextStyle } = styles;
+        const { thumbnailStyle, headerContentStyle, captionStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle, urlTextStyle, likeText } = styles;
         const { post } = this.props
         const { currentUser } = firebase.auth();
 
         // console.log(this.props.post.likers[currentUserID]);
         let toggle = this.state.liked ? 'UNDO LIKE' : 'CLICK TO LIKE';
+        let likes = this.state.likeCountFromDB == 1 ? 'Like' : 'Likes';
         // var likedRef = firebase.database().ref('posts/' + this.props.post.uid + '/likers/' + currentUser.uid);
         // var userLiked;
         // likedRef.on('value', function(snapshot) {
@@ -81,9 +82,13 @@ changeLikeState = (userLiked) => {
                 </CardSection>
                 <CardSection>
                   <View flexDirection="row" alignItems="center">
-                  <Button style={likeButtonStyle} onPress={this.onButtonPress} title={toggle}></Button>
+                  <TouchableOpacity style={likeButtonStyle} onPress={this.onButtonPress}>
+                    <Text style={likeText}>
+                      {toggle}
+                    </Text>
+                  </TouchableOpacity>
                   <Text style={likeCountStyle}>
-                        { 'Likes: ' + this.state.likeCountFromDB }
+                        { this.state.likeCountFromDB + ' ' + likes }
                     </Text>
                   </View>
                 </CardSection>
@@ -111,16 +116,20 @@ const styles = {
     justifyContent: 'space-around'
   },
   headerTextStyle: {
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: 'OpenSans-Bold'
   },
   urlTextStyle: {
     flex: 1,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    marginRight: 5,
+    fontSize: 12,
+    fontFamily: 'OpenSans-Light'
   },
   thumbnailStyle: {
-    height: 50,
-    width: 50,
-    borderRadius: 25
+    height: 60,
+    width: 60,
+    borderRadius: 30
   },
   thumbnailContainerStyle: {
     justifyContent: 'center',
@@ -134,16 +143,27 @@ const styles = {
     width: null
   },
   likeButtonStyle: {
-    height: 25,
-    fontSize: 100,
-    color:'coral'
+    padding: 5,
+    marginTop: 5,
+    marginBottom: 5,
+    marginRight: 5,
+    borderWidth: 1,
+    borderColor: '#2E86C1',
+    borderRadius: 5
+  },
+  likeText: {
+    textAlign: 'center',
+    color: '#2E86C1',
+    fontFamily: 'OpenSans-Light'
   },
   likeCountStyle: {
-    fontSize: 30,
-    color: 'coral'
+    fontSize: 18,
+    fontFamily: 'OpenSans-Light',
+    marginLeft: 5
   },
   captionStyle: {
-    fontSize: 20,
+    fontSize: 18,
+    fontFamily: 'OpenSans-Light',
     color: 'green'
   }
 };
