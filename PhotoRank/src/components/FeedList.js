@@ -23,7 +23,7 @@ class FeedList extends Component {
     }
 
     renderRow(post) {
-        return <PostItem post={post} />
+        return <PostItem post={post} />;
     }
 
     renderList() {
@@ -56,6 +56,6 @@ const mapStateToProps = (state) => {
     });
 
     return { feed, clean: state.feed.clean };
-}
+};
 
 export default connect(mapStateToProps)(FeedList);

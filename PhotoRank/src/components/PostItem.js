@@ -38,18 +38,18 @@ onButtonPress = () => {
   this.setState({
     liked: !(this.state.liked),
     likeCountFromDB: likeCountFromDB
-  })
+  });
 }
 
 changeLikeState = (userLiked) => {
-  this.setState({liked: userLiked})
+  this.setState({liked: userLiked});
 }
 
     render() {
         // console.log('Post Item', this.props.post);
         console.log(this.props);
         const { thumbnailStyle, headerContentStyle, captionStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle, urlTextStyle, likeText } = styles;
-        const { post } = this.props
+        const { post } = this.props;
         const { currentUser } = firebase.auth();
 
         // console.log(this.props.post.likers[currentUserID]);

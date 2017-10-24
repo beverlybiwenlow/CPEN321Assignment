@@ -5,7 +5,7 @@ const TabIcon = ({ selected, title }) => {
     return (
         <Text style={{ color: selected ? 'red' : 'black '}}>{title + '!'}</Text>
     );
-}
+};
 
 const styles = {
     textStyle: {

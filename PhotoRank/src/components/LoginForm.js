@@ -21,7 +21,7 @@ class LoginForm extends Component {
 
     renderButton() {
         if (this.props.loading) {
-            return <Spinner size="large" />
+            return <Spinner size="large" />;
         }
 
         return (
@@ -77,7 +77,7 @@ const mapStateToProps = ({ auth }) => {
         password,
         error,
         loading
-    }
+    };
 }
 
 export default connect(mapStateToProps, {

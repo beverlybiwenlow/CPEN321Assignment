@@ -42,7 +42,7 @@ const RouterComponent =() => {
                 </Scene>
         </Router>
     );
-}
+};
 
 // TESTING ROUTER STYLES
 // const styles = {

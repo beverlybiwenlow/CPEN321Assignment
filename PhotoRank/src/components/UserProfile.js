@@ -28,7 +28,7 @@ class UserProfile extends Component {
         const displayName = this.props.userProfile.displayName || "";
         return (
             <Text> {displayName} </Text>
-        )
+        );
     }
 
     render() {
@@ -46,6 +46,6 @@ const mapStateToProps = (state) => {
     const userProfile = state.user;
 
     return { userProfile };
-}
+};
 
 export default connect(mapStateToProps, { fetchProfile, fetchUserPosts })(UserProfile);
