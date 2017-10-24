@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform, Image, ActivityIndicator, AppRegistry } from 'react-native';
+import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 import firebase from 'firebase';
@@ -44,42 +45,41 @@ class UploadPicture extends Component {
     this.state = {};
   }
 
-  // setUserPost(imageURL) {
-  //   const { currentUser } = firebase.auth();
-  //   var postData = {
-  //     caption: 'This is a caption hahaha',
-  //     displayName: "Find a way to get the name",
-  //     likeCount: 0,
-  //     url: imageURL,
-  //     user: currentUser.uid
-  //   };
-  //
-  //   //get a key for new post
-  //   var newPostKey = firebase.database().ref().child('posts').push().key;
-  //
-  //   //writes data to the posts list
-  //   var updates = {};
-  //   updates['/posts/' + newPostKey] = postData;
-  //   updates['/userPosts/' + currentUser.uid + '/' + newPostKey] = true;
-  //
-  //   return firebase.database().ref().update(updates);
-  //   }
+  setUserPost(imageURL) {
+    const { currentUser } = firebase.auth();
+    var postData = {
+      caption: 'This is a caption hahaha',
+      displayName: this.props.userProfile.displayName,
+      likeCount: 0,
+      likers: {dummy: true},
+      url: imageURL,
+      user: currentUser.uid
+    };
+    //get a key for new post
+    var newPostKey = firebase.database().ref().child('posts').push().key;
+    //writes data to the posts list
+    var updates = {};
+    updates['/posts/' + newPostKey] = postData;
+    updates['/userPosts/' + currentUser.uid + '/' + newPostKey] = true;
+
+    return firebase.database().ref().update(updates);
+    }
 
   _pickImage() {
     this.setState({ uploadURL: '' });
-
     ImagePicker.launchImageLibrary({}, response  => {
       uploadImage(response.uri)
         .then(url => this.setState({ uploadURL: url }))
         .catch(error => console.log(error))
     })
-    // TODO: pass in image URL (currently using dummy url)
-    // this.setUserPost("https://iso.500px.com/wp-content/uploads/2014/04/20482.jpg");
   }
 
 
   render() {
     const { container, image, upload } = styles;
+    //update data in database and set image reference to image in firebase storage
+    if(this.state.uploadURL)
+      this.setUserPost(this.state.uploadURL);
     return (
       <View style={ container }>
         {
@@ -133,4 +133,9 @@ const styles = {
   },
 }
 
-export default UploadPicture
+const mapStateToProps = (state) => {
+    const userProfile = state.user;
+    return { userProfile };
+};
+
+export default connect(mapStateToProps, null)(UploadPicture)
