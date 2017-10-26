@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { SearchBar, Button } from 'react-native-elements';
+import { SearchBar, ButtonGroup } from 'react-native-elements';
 import { View, Text } from 'react-native';
 
 class SearchArea extends Component {
     state = {
         queryTerm: '',
-        showTypes: false
+        showTypes: false,
+        selectedIndex: 0
     };
 
     onQueryChange(text) {
@@ -26,23 +27,19 @@ class SearchArea extends Component {
         this.setState({ showTypes: !this.state.showTypes});
     }
 
+    updateIndex(selectedIndex) {
+        this.setState({ selectedIndex });
+    }
+
     renderTypes() {
+        const buttons = [ 'Tags', 'Users', 'Location']
         if(this.state.showTypes) {
             return (
-                <View style={styles.buttonContainerStyle}>
-                    <Button
-                        buttonStyle={styles.buttonStyle}
-                        raised
-                        title='Tags' />
-                    <Button
-                        buttonStyle={styles.buttonStyle}
-                        raised
-                        title='User' />
-                    <Button
-                        buttonStyle={styles.buttonStyle}
-                        raised
-                        title='Location' />
-                </View>
+                <ButtonGroup
+                  onPress={this.updateIndex.bind(this)}
+                  selectedIndex={this.state.selectedIndex}
+                  buttons={buttons}
+                  containerStyle={{height: 40}} />
             );
         } else {
             return null;
