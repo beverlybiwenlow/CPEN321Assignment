@@ -8,3 +8,6 @@ export const CREATE_PROFILE_SUCCESS = 'create_profile_success';
 export const FETCH_PROFILE_SUCCESS = 'fetch_profile_success';
 export const FETCH_USER_POSTS_SUCCESS = 'fetch_user_posts_success';
 export const RESET_FEED = 'reset_feed';
+
+export const UPDATE_DATABASE_SUCCESS = 'update_database_success';
+export const UPLOADING_IMAGE_IN_PROGRESS = 'uploading_image_in_progress';

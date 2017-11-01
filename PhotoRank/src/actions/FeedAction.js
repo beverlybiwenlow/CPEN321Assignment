@@ -28,27 +28,27 @@ export const fetchUserPosts = () => {
         };
     };
 
-    export const fetchTagPosts = ({ tag }) => {
-        return (dispatch) => {
-            dispatch({ type: RESET_FEED });
-            firebase.database().ref(`/tags/${tag}`)
-                .on('value', snapshots => {
-                    var promises = [];
-                    var posts = {};
-                    snapshots.forEach((key) => {
-                        promises.push(
-                            firebase.database().ref(`/posts/${key.key}`).once('value')
-                        );
-                    });
-                    Promise.all(promises).then((snapshots) => {
-                        snapshots.forEach((snapshot) => {
-                            posts[snapshot.key] = snapshot.val();
-                        });
-                        dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: posts});
-                    });
+export const fetchTagPosts = ({ tag }) => {
+    return (dispatch) => {
+        dispatch({ type: RESET_FEED });
+        firebase.database().ref(`/tags/${tag}`)
+            .on('value', snapshots => {
+                var promises = [];
+                var posts = {};
+                snapshots.forEach((key) => {
+                    promises.push(
+                        firebase.database().ref(`/posts/${key.key}`).once('value')
+                    );
                 });
-        };
+                Promise.all(promises).then((snapshots) => {
+                    snapshots.forEach((snapshot) => {
+                        posts[snapshot.key] = snapshot.val();
+                    });
+                    dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: posts});
+                });
+            });
     };
+};
 
 export const fetchPosts = () => {
     return (dispatch) => {
