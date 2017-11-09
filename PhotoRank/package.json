@@ -26,13 +26,16 @@
     "appium": "^1.7.1",
     "babel-jest": "21.2.0",
     "babel-preset-react-native": "4.0.0",
+    "firebase-mock": "^1.1.5",
     "jest": "^21.2.1",
     "react-test-renderer": "16.0.0-beta.5",
     "wd": "^1.4.1"
   },
   "jest": {
     "preset": "react-native",
-    "transformIgnorePatterns": ["node_modules/(?!react-native|native-base|react-navigation|react-native-fabric)"]
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|native-base|react-navigation|react-native-fabric)"
+    ]
   },
   "rnpm": {
     "assets": [

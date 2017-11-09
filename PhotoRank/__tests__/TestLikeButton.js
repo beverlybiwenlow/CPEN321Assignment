@@ -1,45 +1,22 @@
-// Link.react-test.js
+'use strict';
+
 import React from 'react';
+import ReactTestRenderer from 'react-test-renderer';
+import { Text, View, TextInput } from 'react-native';
+
 import PostItem from '../src/components/PostItem';
-import ErrorBoundary from '../src/components/ErrorBoundary';
-import renderer from 'react-test-renderer';
 
-
-// const React = require('React');
-// const ReactTestRenderer = require('react-test-renderer');
-// const Text = require('Text');
-// const TouchableHighlight = require('TouchableHighlight');
-
-// describe('TouchableHighlight', () => {
-//   it('renders correctly', () => {
-//     const instance = ReactTestRenderer.create(
-//         <PostItem/>
-//         // <Text>HI</Text>
-//     );
-//     console.log(instance.props);
-//     expect(instance.toJSON()).toMatchSnapshot();
-//   });
-// });
-
-test('Like button toggles the class when clicked', () => {
-  const component = renderer.create(
-    // <ErrorBoundary>
-        <PostItem/>
-    // </ErrorBoundary>
-  );
-
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
-
-  // manually trigger the callback
-  tree.onButtonPress();
-  // re-rendering
-  tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
-
-  // manually trigger the callback
-  tree.onButtonPress();
-  // re-rendering
-  tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+test('Post item test', () => {
+    var MockFirebase = require('firebase-mock').MockFirebase;
+    const component = ReactTestRenderer.create(
+        <PostItem />
+    );
+    let tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+    // const innerView = tree.children;
+    // const searchBar = innerView[0].children[0];
+    // searchBar.props.onFocus();
+    // //tree.props.onFocus();
+    // tree = component.toJSON();
+    // expect(tree).toMatchSnapshot();
 });
