@@ -11,7 +11,7 @@ class PostItem extends Component {
     this.state = {liked: this.props.post.likers[currentUser.uid], likeCountFromDB: this.props.post.likeCount};
     // this.state = {liked: false, likeCountFromDB: this.props.post.likeCount};
 
-    console.log(this.state.liked);
+    //console.log(this.state.liked);
 }
 
 onButtonPress = () => {
@@ -46,8 +46,7 @@ changeLikeState = (userLiked) => {
 }
 
     render() {
-        // console.log('Post Item', this.props.post);
-        console.log(this.props);
+        //console.log(this.props);
         const { thumbnailStyle, headerContentStyle, captionStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle, urlTextStyle, likeText } = styles;
         const { post } = this.props;
         const { currentUser } = firebase.auth();

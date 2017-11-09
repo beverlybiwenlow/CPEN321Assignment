@@ -3,9 +3,15 @@ import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 
+import { Actions } from 'react-native-router-flux';
+
 import {
     UPDATE_DATABASE_SUCCESS,
-    UPLOADING_IMAGE_IN_PROGRESS
+    UPLOADING_IMAGE_IN_PROGRESS,
+    SELECT_IMAGE_SUCCESS,
+    CAPTION_CHANGED,
+    TAG_CHANGED,
+    LOCATION_CHANGED
 } from './types';
 
 // Prepare Blob support
@@ -42,10 +48,10 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
   })
 };
 
-const setUserPost = (displayName, imageURL) => {
+const setUserPost = (displayName, imageURL, caption, tags, location) => {
   const { currentUser } = firebase.auth();
   var postData = {
-    caption: 'This is a caption hahaha',
+    caption: caption,
     displayName: displayName,
     likeCount: 0,
     likers: {dummy: true},
@@ -57,22 +63,60 @@ const setUserPost = (displayName, imageURL) => {
   //writes data to the posts list
   var updates = {};
   updates['/posts/' + newPostKey] = postData;
+
+  // assign post to user
   updates['/userPosts/' + currentUser.uid + '/' + newPostKey] = true;
 
+  // assign post to related tags
+  const tagsList = tags.replace(' ', '').split(',');
+  tagsList.forEach((tag) => {
+     updates[`/tags/${tag}/${newPostKey}`] = true;
+  });
+
+  // assign post to location
+  updates[`/locationFeature/${location}/${newPostKey}`] = true;
   return firebase.database().ref().update(updates);
 };
 
-export const uploadToDatabase = (displayName) => {
+export const selectImage = () => {
   return (dispatch) => {
     ImagePicker.launchImageLibrary({}, response  => {
       dispatch({ type: UPLOADING_IMAGE_IN_PROGRESS });
       uploadImage(response.uri)
         .then(url => {
-          setUserPost(displayName, url)
-          dispatch({ type: UPDATE_DATABASE_SUCCESS, payload: url });
+          dispatch({ type: SELECT_IMAGE_SUCCESS, payload: url });
         })
         .catch(error => console.log(error))
     })
   }
+}
 
+export const uploadToDatabase = (displayName, imageURL, caption, tags, location) => {
+    return (dispatch) => {
+        setUserPost(displayName, imageURL, caption, tags, location);
+        dispatch({ type: UPDATE_DATABASE_SUCCESS });
+
+        Actions.push("userProfile");
+    }
+}
+
+export const captionChanged = (text) => {
+    return {
+        type: CAPTION_CHANGED,
+        payload: text
+    };
+}
+
+export const tagChanged = (text) => {
+    return {
+        type: TAG_CHANGED,
+        payload: text
+    };
+}
+
+export const locationChanged = (text) => {
+    return {
+        type: LOCATION_CHANGED,
+        payload: text
+    };
 }

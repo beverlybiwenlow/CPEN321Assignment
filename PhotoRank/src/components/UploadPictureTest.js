@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, App
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 
-import { uploadToDatabase } from '../actions';
+import { selectImage } from '../actions';
+import UploadForm from './UploadForm';
 
 
 class UploadPicture extends Component {
@@ -12,14 +13,35 @@ class UploadPicture extends Component {
     this.state = {};
   }
 
+  renderUploadForm() {
+      const { selectedImage } = this.props.uploadState;
+      const { uploadButton, uploadForm } = styles;
+
+      if (selectedImage) {
+          return (
+              <View style= {uploadForm}>
+                  <UploadForm />
+              </View>
+          );
+      } else {
+          return (
+              <TouchableOpacity onPress={ () => this.props.selectImage() }>
+                <Text style={ uploadButton }>
+                  Tap here to upload a picture
+                </Text>
+              </TouchableOpacity>
+          );
+      }
+  }
+
   render() {
     const { container, image, upload } = styles;
-
+    const { url } = this.props.uploadState;
     return (
       <View style={ container }>
         {
           (() => {
-            switch (this.props.uploadState.url) {
+            switch (url) {
               case null:
                 return null
               case '':
@@ -28,20 +50,16 @@ class UploadPicture extends Component {
                 return (
                   <View>
                     <Image
-                      source={{ uri: this.props.uploadState.url }}
+                      source={{ uri: url }}
                       style={ image }
                     />
-                    <Text>{ this.props.uploadState.url }</Text>
+                    <Text>{ url }</Text>
                   </View>
                 )
             }
           })()
         }
-        <TouchableOpacity onPress={ () => this.props.uploadToDatabase(this.props.user.displayName) }>
-          <Text style={ upload }>
-            Tap here to upload a picture
-          </Text>
-        </TouchableOpacity>
+        {this.renderUploadForm()}
       </View>
     )
   }
@@ -58,7 +76,7 @@ const styles = {
     height: 200,
     resizeMode: 'contain',
   },
-  upload: {
+  uploadButton: {
     textAlign: 'center',
     color: '#333333',
     padding: 10,
@@ -66,6 +84,9 @@ const styles = {
     borderWidth: 1,
     borderColor: 'gray'
   },
+  uploadForm: {
+      alignSelf: 'stretch'
+  }
 }
 
 const mapStateToProps = (state) => {
@@ -74,4 +95,4 @@ const mapStateToProps = (state) => {
     return { user, uploadState };
 };
 
-export default connect(mapStateToProps, { uploadToDatabase })(UploadPicture)
+export default connect(mapStateToProps, { selectImage })(UploadPicture)

@@ -11,3 +11,7 @@ export const RESET_FEED = 'reset_feed';
 
 export const UPDATE_DATABASE_SUCCESS = 'update_database_success';
 export const UPLOADING_IMAGE_IN_PROGRESS = 'uploading_image_in_progress';
+export const SELECT_IMAGE_SUCCESS = 'select_image_success';
+export const CAPTION_CHANGED = 'caption_changed';
+export const TAG_CHANGED = 'tag_changed';
+export const LOCATION_CHANGED = 'location_changed';
