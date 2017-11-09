@@ -4,11 +4,11 @@ import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 import { Text, View, TextInput } from 'react-native';
 
-import SearchArea from '../src/components/SearchArea';
+import PostItem from '../src/components/PostItem';
 
 test('Login succeeds when right username is input', () => {
     const component = ReactTestRenderer.create(
-        <SearchArea />
+        <PostItem />
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
