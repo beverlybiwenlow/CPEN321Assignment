@@ -52,19 +52,4 @@ const RouterComponent =() => {
         </Router>
     );
 };
-
-// TESTING ROUTER STYLES
-// const styles = {
-//   tabBar: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   tabs: {
-//     flex: 1,
-//     flexDirection: 'column',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   }
-// }
-
 export default RouterComponent;
