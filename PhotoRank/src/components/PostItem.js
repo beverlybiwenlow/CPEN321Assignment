@@ -12,6 +12,8 @@ class PostItem extends Component {
     // this.state = {liked: false, likeCountFromDB: this.props.post.likeCount};
 
     console.log(this.state.liked);
+    
+    this.onButtonPress = this.onButtonPress.bind(this);
 }
 
 onButtonPress = () => {
