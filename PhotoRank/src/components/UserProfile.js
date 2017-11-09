@@ -6,6 +6,8 @@ import { Actions } from 'react-native-router-flux';
 import FeedList from './FeedList';
 import { fetchProfile, fetchUserPosts } from '../actions';
 
+import TestComponent from './TestComponent';
+
 class UserProfile extends Component {
     componentWillMount() {
         this.props.fetchUserPosts();
@@ -36,6 +38,7 @@ class UserProfile extends Component {
         return (
             <View>
                 {this.renderUserHeader()}
+                <TestComponent/>
                 <FeedList />
             </View>
         );

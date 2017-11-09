@@ -23,10 +23,12 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "appium": "^1.7.1",
     "babel-jest": "21.2.0",
     "babel-preset-react-native": "4.0.0",
-    "jest": "21.2.1",
-    "react-test-renderer": "16.0.0-beta.5"
+    "jest": "^21.2.1",
+    "react-test-renderer": "16.0.0-beta.5",
+    "wd": "^1.4.1"
   },
   "jest": {
     "preset": "react-native"
