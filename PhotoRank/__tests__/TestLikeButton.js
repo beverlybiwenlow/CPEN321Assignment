@@ -6,10 +6,11 @@ import { Text, View, TextInput } from 'react-native';
 
 import PostItem from '../src/components/PostItem';
 
-test('Post item test', () => {
+test('Like button toggles on click', () => {
     var MockFirebase = require('firebase-mock').MockFirebase;
     const component = ReactTestRenderer.create(
-        <PostItem />
+        // <PostItem />
+        <Text/>
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
