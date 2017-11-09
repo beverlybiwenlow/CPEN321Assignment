@@ -68,13 +68,15 @@ const setUserPost = (displayName, imageURL, caption, tags, location) => {
   updates['/userPosts/' + currentUser.uid + '/' + newPostKey] = true;
 
   // assign post to related tags
-  const tagsList = tags.replace(' ', '').split(',');
-  tagsList.forEach((tag) => {
-     updates[`/tags/${tag}/${newPostKey}`] = true;
-  });
+  if (tags !== '') {
+      const tagsList = tags.replace(' ', '').split(',');
+      tagsList.forEach((tag) => {
+         updates[`/tags/${tag}/${newPostKey}`] = true;
+      });
+  }
 
   // assign post to location
-  updates[`/locationFeature/${location}/${newPostKey}`] = true;
+  updates[`/locationFeature/${location.toLowerCase()}/${newPostKey}`] = true;
   return firebase.database().ref().update(updates);
 };
 

@@ -5,11 +5,11 @@ import {
     FETCH_USER_POSTS_SUCCESS
 } from './types';
 
-export const fetchUserPosts = () => {
-    const { currentUser } = firebase.auth();
+export const fetchUserPosts = ({ uid}) => {
+    // const { currentUser } = firebase.auth();
     return (dispatch) => {
         dispatch({ type: RESET_FEED });
-        firebase.database().ref(`/userPosts/${currentUser.uid}`)
+        firebase.database().ref(`/userPosts/${uid}`)
             .on('value', snapshots => {
                 var promises = [];
                 var posts = {};
@@ -31,7 +31,30 @@ export const fetchUserPosts = () => {
 export const fetchTagPosts = ({ tag }) => {
     return (dispatch) => {
         dispatch({ type: RESET_FEED });
+
         firebase.database().ref(`/tags/${tag}`)
+            .on('value', snapshots => {
+                var promises = [];
+                var posts = {};
+                snapshots.forEach((key) => {
+                    promises.push(
+                        firebase.database().ref(`/posts/${key.key}`).once('value')
+                    );
+                });
+                Promise.all(promises).then((snapshots) => {
+                    snapshots.forEach((snapshot) => {
+                        posts[snapshot.key] = snapshot.val();
+                    });
+                    dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: posts});
+                });
+            });
+    };
+};
+
+export const fetchLocationPosts = ({ location }) => {
+    return (dispatch) => {
+        dispatch({ type: RESET_FEED });
+        firebase.database().ref(`/locationFeature/${location.toLowerCase()}`)
             .on('value', snapshots => {
                 var promises = [];
                 var posts = {};

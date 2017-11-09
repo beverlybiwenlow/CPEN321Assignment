@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { SearchBar, ButtonGroup } from 'react-native-elements';
 import { View, Text } from 'react-native';
+import { connect } from 'react-redux';
+
+import { fetchTagPosts, fetchPosts, fetchUserPosts, fetchLocationPosts } from '../actions';
 
 class SearchArea extends Component {
     state = {
@@ -13,13 +16,25 @@ class SearchArea extends Component {
         this.setState({ queryTerm: text});
     }
 
-    onSearchSubmit(queryTerm) {
-        const query = queryTerm.toLowerCase();
+    onSearchSubmit(query) {
+        // default fetch if there is no query
         if (query === '') {
             this.props.fetchPosts();
         } else {
-            this.props.fetchTagPosts({ tag: query});
+            // send different search depending on index
+            switch(this.state.selectedIndex) {
+                case 0:
+                    this.props.fetchTagPosts({ tag: query.toLowerCase()});
+                    break;
+                case 1:
+                    this.props.fetchUserPosts({ uid: query });
+                    break;
+                case 2:
+                    this.props.fetchLocationPosts({ location: query.toLowerCase() });
+                    break;
+            }
         }
+
         this.setState({ queryTerm: ''});
     }
 
@@ -82,4 +97,6 @@ const styles = {
      }
 }
 
-export default SearchArea;
+export default connect(null, {
+    fetchTagPosts, fetchPosts, fetchUserPosts, fetchLocationPosts
+})(SearchArea);
