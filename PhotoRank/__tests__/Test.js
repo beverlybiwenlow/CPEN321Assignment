@@ -2,10 +2,10 @@ import wd from 'wd';
 class Helper {
   setup() {
     const capabilities = {
-       platformName: 'Android',
+       platformName: 'ios',
        deviceName: 'Android Emulator',
     //    platformVersion: '10.2',
-       app: 'C:\Users\Beverly\Desktop\CPEN321Assignment\PhotoRank\android\app\build\outputs\apk\app-debug.apk',
+       app: '../ios/build/Release-iphonesimulator/PhotoRank.app',
     };
     this.driver = wd.promiseChainRemote('0.0.0.0', 4723);
     return this.driver.init(capabilities);
