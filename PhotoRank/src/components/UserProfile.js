@@ -38,7 +38,6 @@ class UserProfile extends Component {
         return (
             <View>
                 {this.renderUserHeader()}
-                <TestComponent/>
                 <FeedList />
             </View>
         );
