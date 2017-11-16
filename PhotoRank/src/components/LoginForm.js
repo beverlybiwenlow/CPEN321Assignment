@@ -5,67 +5,93 @@ import { Text, View, Linking, Platform } from 'react-native';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
+import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
+import FBLoginView from './FBLoginView';
+// import FireAuth from 'react-native-firebase-auth';
+
 // import Icon from 'react-native-vector-icons/FontAwesome';
 // import SafariView from 'react-native-safari-view';
 //import SpecialLogin from './SpecialLogin';
 
+var LoginBehavior = {
+    'ios': FBLoginManager.LoginBehaviors.Browser,
+    'android': FBLoginManager.LoginBehaviors.Native
+  }
+
 class LoginForm extends Component {
 
+    // constructor(props) {
+    //     super(props);
+    //     FireAuth.init({iosClientId: 612732847233-hoko4th3g6cd9vkjrsro3u8ugfqe5077.apps.googleusercontent.com});
+    //   }
 
-    state = {
-        user: undefined, // user has not logged in yet
-      };
-    
-      // Set up Linking
-      componentDidMount() {
-        // Add event listener to handle OAuthLogin:// URLs
-        Linking.addEventListener('url', this.handleOpenURL);
-        // Launched from an external URL
-        Linking.getInitialURL().then((url) => {
-          if (url) {
-            this.handleOpenURL({ url });
-          }
-        });
-      };
-    
-      componentWillUnmount() {
-        // Remove event listener
-        Linking.removeEventListener('url', this.handleOpenURL);
-      };
-    
-      handleOpenURL = ({ url }) => {
-        // Extract stringified user string out of the URL
-        const [, user_string] = url.match(/user=([^#]+)/);
-        this.setState({
-          // Decode the user string and parse it into JSON
-          user: JSON.parse(decodeURI(user_string))
-        });
-        if (Platform.OS === 'ios') {
-          SafariView.dismiss();
-        }
-      };
-    
-      // Handle Login with Facebook button tap
-      loginWithFacebook = () => this.openURL('http://localhost:3000/auth/facebook');
-    
-      // Handle Login with Google button tap
-      loginWithGoogle = () => this.openURL('http://localhost:3000/auth/google');
-    
-      // Open URL in a browser
-      openURL = (url) => {
-        // Use SafariView on iOS
-        if (Platform.OS === 'ios') {
-          SafariView.show({
-            url: url,
-            fromBottom: true,
-          });
-        }
-        // Or Linking.openURL on Android
-        else {
-          Linking.openURL(url);
-        }
-      };
-    
+    //   componentDidMount() {
+    //     FireAuth.setup(this.onLogin, this.onUserChange, this.onLogout, this.emailVerified, this.onError);
+    //   }
+      
+    //   register = () => {
+    //     const { email, password, firstName, lastName } = this.state;
+    //     FireAuth.register(email, password, { firstName, lastName });
+    //   }
+      
+    //   login = () => {
+    //     FireAuth.login(this.state.email, this.state.password);
+    //   }
+      
+    //   loginAnonymously = () => {
+    //     FireAuth.loginAnonymously();
+    //   }
+      
+    //   facebookLogin() {
+    //     FireAuth.facebookLogin();
+    //   }
+      
+    //   googleLogin() {
+    //     FireAuth.googleLogin();
+    //   }
+      
+    //   logout() {
+    //     FireAuth.logout();
+    //   }
+      
+    //   update () {
+    //     FireAuth.update({
+    //       firstName: this.state.firstName,
+    //       lastName: this.state.lastName
+    //     }).then(() => {
+          
+    //     }).catch(err => {
+          
+    //     });
+    //   }
+      
+    //   resetPassword () {
+    //     FireAuth.resetPassword(this.state.email)
+    //       .then(() => {
+            
+    //       })
+    //       .catch(err => {
+            
+    //       });
+    //   }
+      
+    //   updatePassword () {
+    //     FireAuth.updatePassword(this.state.password)
+    //       .then(() => {
+            
+    //       })
+    //       .catch(err => {
+            
+    //       });
+    //   }
+      
+
+    // state = {
+    //     user: undefined, // user has not logged in yet
+    //   };
+
+      
+   
 
 
     onEmailChange(text) {
@@ -121,24 +147,23 @@ class LoginForm extends Component {
                     {this.renderButton()}
                 </CardSection>
             </Card>
-            <View style={styles.buttons}>
-          <Button
-            name="facebook"
-            backgroundColor="#3b5998"
-            onPress={this.loginWithFacebook}
-            {...iconStyles}
-          >
-            Facebook Login
-          </Button>
-          <Button
-            name="google"
-            backgroundColor="#DD4B39"
-            onPress={this.loginWithGoogle}
-            {...iconStyles}
-          >
-            Google Login
-          </Button>
-        </View>
+            
+
+        
+        <FBLogin
+    buttonView={<FBLoginView />}
+    ref={(fbLogin) => { this.fbLogin = fbLogin }}
+    loginBehavior={LoginBehavior[Platform.OS]}
+    permissions={["email","user_friends"]}
+    onLogin={function(e){console.log(e)}}
+    onLoginFound={function(e){console.log(e)}}
+    onLoginNotFound={function(e){console.log(e)}}
+    onLogout={function(e){console.log(e)}}
+    onCancel={function(e){console.log(e)}}
+    onPermissionsMissing={function(e){console.log(e)}}
+  />
+
+
         </View>
         );
     }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PhotoRank</string>
+    <string name="fb_app_id">137811776874972</string>
+    <string name="fb_login_protocol_scheme">fb137811776874972</string>
 </resources>
