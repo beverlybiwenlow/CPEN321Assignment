@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
+
+//import SpecialLogin from './SpecialLogin';
 
 class LoginForm extends Component {
     onEmailChange(text) {
@@ -33,6 +35,7 @@ class LoginForm extends Component {
 
     render() {
         return (
+        <View>
             <Card>
                 <CardSection>
                     <Input
@@ -58,6 +61,7 @@ class LoginForm extends Component {
                     {this.renderButton()}
                 </CardSection>
             </Card>
+        </View>
         );
     }
 }
