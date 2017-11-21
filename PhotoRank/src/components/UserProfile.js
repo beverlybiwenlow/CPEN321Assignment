@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, ListView } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
+import firebase from 'firebase';
 
 import FeedList from './FeedList';
 import { fetchProfile, fetchUserPosts } from '../actions';
@@ -10,13 +11,15 @@ import TestComponent from './TestComponent';
 
 class UserProfile extends Component {
     componentWillMount() {
-        this.props.fetchUserPosts();
+        const { currentUser } = firebase.auth();
+        this.props.fetchUserPosts({uid: currentUser.uid });
         this.props.fetchProfile();
     }
 
     componentWillReceiveProps (nextProps) {
         if (this.props.enterTime !== nextProps.enterTime) {
-            this.props.fetchUserPosts();
+            const { currentUser } = firebase.auth();
+            this.props.fetchUserPosts({ uid: currentUser.uid });
         }
     }
 

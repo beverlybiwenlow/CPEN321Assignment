@@ -1,24 +1,40 @@
 import React, { Component } from 'react';
-import { SearchBar, Button } from 'react-native-elements';
+import { SearchBar, ButtonGroup } from 'react-native-elements';
 import { View, Text } from 'react-native';
+import { connect } from 'react-redux';
+
+import { fetchTagPosts, fetchPosts, fetchUserPosts, fetchLocationPosts } from '../actions';
 
 class SearchArea extends Component {
     state = {
         queryTerm: '',
-        showTypes: false
+        showTypes: false,
+        selectedIndex: 0
     };
 
     onQueryChange(text) {
         this.setState({ queryTerm: text});
     }
 
-    onSearchSubmit(queryTerm) {
-        const query = queryTerm.toLowerCase();
+    onSearchSubmit(query) {
+        // default fetch if there is no query
         if (query === '') {
             this.props.fetchPosts();
         } else {
-            this.props.fetchTagPosts({ tag: query});
+            // send different search depending on index
+            switch(this.state.selectedIndex) {
+                case 0:
+                    this.props.fetchTagPosts({ tag: query.toLowerCase()});
+                    break;
+                case 1:
+                    this.props.fetchUserPosts({ uid: query });
+                    break;
+                case 2:
+                    this.props.fetchLocationPosts({ location: query.toLowerCase() });
+                    break;
+            }
         }
+
         this.setState({ queryTerm: ''});
     }
 
@@ -26,23 +42,19 @@ class SearchArea extends Component {
         this.setState({ showTypes: !this.state.showTypes});
     }
 
+    updateIndex(selectedIndex) {
+        this.setState({ selectedIndex });
+    }
+
     renderTypes() {
+        const buttons = [ 'Tags', 'Users', 'Location']
         if(this.state.showTypes) {
             return (
-                <View style={styles.buttonContainerStyle}>
-                    <Button
-                        buttonStyle={styles.buttonStyle}
-                        raised
-                        title='Tags' />
-                    <Button
-                        buttonStyle={styles.buttonStyle}
-                        raised
-                        title='User' />
-                    <Button
-                        buttonStyle={styles.buttonStyle}
-                        raised
-                        title='Location' />
-                </View>
+                <ButtonGroup
+                  onPress={this.updateIndex.bind(this)}
+                  selectedIndex={this.state.selectedIndex}
+                  buttons={buttons}
+                  containerStyle={{height: 40}} />
             );
         } else {
             return null;
@@ -85,4 +97,6 @@ const styles = {
      }
 }
 
-export default SearchArea;
+export default connect(null, {
+    fetchTagPosts, fetchPosts, fetchUserPosts, fetchLocationPosts
+})(SearchArea);

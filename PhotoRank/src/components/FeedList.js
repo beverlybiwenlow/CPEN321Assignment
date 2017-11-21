@@ -54,7 +54,7 @@ const mapStateToProps = (state) => {
     const feed = _.map(state.feed.posts, (val, uid) => {
         return {...val, uid};
     });
-
+    console.log('feed list props', { feed, clean: state.feed.clean })
     return { feed, clean: state.feed.clean };
 };
 
