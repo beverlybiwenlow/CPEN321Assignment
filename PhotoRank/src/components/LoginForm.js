@@ -18,7 +18,6 @@ class LoginForm extends Component {
     componentWillMount() {
         AccessToken.getCurrentAccessToken().then((data) => {
             if (data !== null) {
-                console.log('data', data);
                 this.props.loginWithFacebook(data.accessToken.toString());
             }
         })
