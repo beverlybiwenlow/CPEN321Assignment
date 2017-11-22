@@ -36,6 +36,28 @@ export const loginUser = ({ email, password }) => {
     };
 };
 
+export const loginWithFacebook = (accessTokenData) => {
+    console.log('token', accessTokenData)
+    return (dispatch) => {
+        const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData);
+        firebase.auth().signInWithCredential(credential).then(function(user) {
+            loginUserSuccess(dispatch, user);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+}
+
+export const checkInitialAuth = () => {
+    return (dispatch) => {
+        const user = firebase.auth().currentUser;
+        console.log('user', user);
+        if (user) {
+            loginUserSuccess(dispatch, user);
+        }
+    }
+}
+
 const loginUserFail = (dispatch) => {
     dispatch({ type: LOGIN_USER_FAIL });
 };

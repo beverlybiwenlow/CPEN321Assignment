@@ -4,6 +4,9 @@ export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGIN_USER_FAIL= 'login_user_fail';
 export const LOGIN_USER = 'login_user';
 
+export const UPDATE_BUTTON_REVERT = 'update_button_revert';
+export const UPDATE_PROFILE_SUCCESS = 'update_profile_success';
+export const DISPLAY_NAME_CHANGED = 'display_name_changed';
 export const CREATE_PROFILE_SUCCESS = 'create_profile_success';
 export const FETCH_PROFILE_SUCCESS = 'fetch_profile_success';
 export const FETCH_USER_POSTS_SUCCESS = 'fetch_user_posts_success';

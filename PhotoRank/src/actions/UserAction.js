@@ -2,7 +2,10 @@ import firebase from 'firebase';
 
 import {
     CREATE_PROFILE_SUCCESS,
-    FETCH_PROFILE_SUCCESS
+    FETCH_PROFILE_SUCCESS,
+    DISPLAY_NAME_CHANGED,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_BUTTON_REVERT
 } from './types';
 
 export const createProfile = ({ displayName }) => {
@@ -32,3 +35,27 @@ export const fetchProfile = () => {
             });
     };
 };
+
+export const displayNameChanged = (text) => {
+    return {
+        type: DISPLAY_NAME_CHANGED,
+        payload: text
+    }
+}
+
+export const updateDisplayName = (displayName) => {
+    return (dispatch) => {
+        updateDisplayNameDatabase(displayName);
+        dispatch({ type: UPDATE_PROFILE_SUCCESS });
+        setTimeout(function() {
+            dispatch({ type: UPDATE_BUTTON_REVERT});
+        }, 2000);
+    }
+}
+
+const updateDisplayNameDatabase = (displayName) => {
+    const { currentUser } = firebase.auth();
+    updates = {};
+    updates[`/users/${currentUser.uid}/displayName`] = displayName;
+    return firebase.database().ref().update(updates);
+}

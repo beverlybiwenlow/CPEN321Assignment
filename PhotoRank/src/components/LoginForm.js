@@ -1,11 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
+import {
+    LoginButton,
+    AccessToken
+} from 'react-native-fbsdk';
+import firebase from 'firebase';
 
-import { emailChanged, passwordChanged, loginUser } from '../actions';
+import {
+    emailChanged,
+    passwordChanged,
+    loginUser,
+    loginWithFacebook } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class LoginForm extends Component {
+    componentWillMount() {
+        AccessToken.getCurrentAccessToken().then((data) => {
+            if (data !== null) {
+                this.props.loginWithFacebook(data.accessToken.toString());
+            }
+        })
+    }
+
     onEmailChange(text) {
         this.props.emailChanged(text);
     }
@@ -51,11 +68,29 @@ class LoginForm extends Component {
                         value={this.props.password}
                     />
                 </CardSection>
-                <Text style={styles.errorTextStyle}>
-                    {this.props.error}
-                </Text>
                 <CardSection>
                     {this.renderButton()}
+                </CardSection>
+                <CardSection>
+                    <LoginButton
+                      publishPermissions={["publish_actions"]}
+                      onLoginFinished={
+                        (error, result) => {
+                          if (error) {
+                            alert("login has error: " + result.error);
+                          } else if (result.isCancelled) {
+                            alert("login is cancelled.");
+                          } else {
+                            AccessToken.getCurrentAccessToken().then(
+                              (data) => {
+                                  this.props.loginWithFacebook(data.accessToken.toString())
+                                //alert(data.accessToken.toString())
+                              }
+                            )
+                          }
+                        }
+                      }
+                      onLogoutFinished={() => alert("logout.")}/>
                 </CardSection>
             </Card>
         );
@@ -81,5 +116,5 @@ const mapStateToProps = ({ auth }) => {
 }
 
 export default connect(mapStateToProps, {
-    emailChanged, passwordChanged, loginUser
+    emailChanged, passwordChanged, loginUser, loginWithFacebook
  })(LoginForm);
