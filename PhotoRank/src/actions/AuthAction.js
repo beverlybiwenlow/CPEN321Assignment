@@ -41,6 +41,7 @@ export const loginWithFacebook = (accessTokenData) => {
     return (dispatch) => {
         const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData);
         firebase.auth().signInWithCredential(credential).then(function(user) {
+            updateDisplayNameDatabase(user.displayName);
             loginUserSuccess(dispatch, user);
         }).catch((error) => {
             console.log(error);
@@ -68,3 +69,10 @@ const loginUserSuccess = (dispatch, user) => {
     Actions.reset("main");
     Actions.push("userProfile");
 };
+
+const updateDisplayNameDatabase = (displayName) => {
+    const { currentUser } = firebase.auth();
+    updates = {};
+    updates[`/users/${currentUser.uid}/displayName`] = displayName;
+    return firebase.database().ref().update(updates);
+}
