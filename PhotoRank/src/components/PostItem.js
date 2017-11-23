@@ -3,6 +3,7 @@ import { Text, View, Image, Button, Alert, TouchableOpacity} from 'react-native'
 import firebase from 'firebase';
 import { Card, CardSection } from './common';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class PostItem extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ changeLikeState = (userLiked) => {
 
     render() {
         //console.log(this.props);
-        const { thumbnailStyle, headerContentStyle, captionStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle, urlTextStyle, likeText } = styles;
+        const { thumbnailStyle, headerContentStyle, detailsContentStyle, captionStyle, captionBoldStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle, urlTextStyle, likeText } = styles;
         const { post } = this.props;
         const { currentUser } = firebase.auth();
 
@@ -69,11 +70,20 @@ changeLikeState = (userLiked) => {
                   </View>
                   <View style = {headerContentStyle}>
                     <Text style = {headerTextStyle}>
-                        { "User: " + post.displayName }
+                        { post.displayName }
                     </Text>
-                    <Text style = {urlTextStyle}>
-                        {'Url: ' + post.url}
-                    </Text>
+                    <View style = {detailsContentStyle}>
+                      <Icon name="md-pin" size={16} color="#900" />
+                      <Text style = {urlTextStyle}>
+                          { post.location || "There is no location" }
+                      </Text>
+                    </View>
+                    <View style = {detailsContentStyle}>
+                      <Icon name="md-pricetag" size={18} color="#009" />
+                      <Text style = {urlTextStyle}>
+                          { post.tags || "There are no tags" }
+                      </Text>
+                    </View>
                   </View>
                 </CardSection>
                 <CardSection>
@@ -93,8 +103,11 @@ changeLikeState = (userLiked) => {
                 </CardSection>
                 <CardSection>
                   <View style = {footerContentStyle}>
-                    <Text style={captionStyle}>
-                        { 'Caption: ' + post.caption }
+                    <Text style = {captionStyle}>
+                      <Text style = {captionBoldStyle}>
+                        {post.displayName}
+                      </Text>
+                      { "  " + post.caption }
                     </Text>
 
                   </View>
@@ -110,6 +123,11 @@ const styles = {
     justifyContent: 'space-around',
     flex: 1
   },
+  detailsContentStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flex:1
+  },
   footerContentStyle: {
     flexDirection: 'column',
     justifyContent: 'space-around'
@@ -121,6 +139,7 @@ const styles = {
   urlTextStyle: {
     flex: 1,
     flexWrap: 'wrap',
+    marginLeft: 5,
     marginRight: 5,
     fontSize: 12,
     fontFamily: 'OpenSans-Light'
@@ -160,10 +179,14 @@ const styles = {
     fontFamily: 'OpenSans-Light',
     marginLeft: 5
   },
+  captionBoldStyle: {
+    fontSize: 16,
+    fontFamily: 'OpenSans-Bold'
+  },
   captionStyle: {
-    fontSize: 18,
+    marginLeft: 5,
+    fontSize: 16,
     fontFamily: 'OpenSans-Light',
-    color: 'green'
   }
 };
 

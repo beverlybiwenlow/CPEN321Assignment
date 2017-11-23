@@ -19,7 +19,7 @@ const TabIcon= ({ focused, title}) => {
             return <Icon
                         name={focused? "ios-home" : "ios-home-outline"}
                         size={30}
-                        color={focused ? Colors.selected : Colors.notSelected } 
+                        color={focused ? Colors.selected : Colors.notSelected }
                         />;
     }
 };

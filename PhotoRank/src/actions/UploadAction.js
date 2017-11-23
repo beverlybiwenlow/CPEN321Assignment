@@ -56,7 +56,8 @@ const setUserPost = (displayName, imageURL, caption, tags, location) => {
     likeCount: 0,
     likers: {dummy: true},
     url: imageURL,
-    user: currentUser.uid
+    user: currentUser.uid,
+    location: location
   };
   //get a key for new post
   var newPostKey = firebase.database().ref().child('posts').push().key;

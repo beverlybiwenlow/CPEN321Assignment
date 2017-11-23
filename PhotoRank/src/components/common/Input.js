@@ -24,13 +24,15 @@ const styles = {
         color: '#000',
         paddingRight: 5,
         paddingLeft: 5,
-        fontSize: 18,
+        fontSize: 16,
+        fontFamily: 'OpenSans-Light',
         lineHeight: 23,
         flex: 2
     },
     labelStyle: {
-        fontSize: 18,
-        paddingLeft: 20,
+        fontSize: 15,
+        fontFamily: 'OpenSans-Bold',
+        paddingLeft: 10,
         flex: 1
     },
     containerStyle: {
