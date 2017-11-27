@@ -38,7 +38,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Take a photo for us</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select an existing photo for us</string>
 	<key>UIAppFonts</key>
@@ -79,27 +79,25 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb2373224122903505</string>
-      </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>2373224122903505</string>
-  <key>FacebookDisplayName</key>
-  <string>PhotoRank</string>
-  
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fbapi</string>
-    <string>fb-messenger-api</string>
-    <string>fbauth2</string>
-    <string>fbshareextension</string>
-  </array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb2373224122903505</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>2373224122903505</string>
+	<key>FacebookDisplayName</key>
+	<string>PhotoRank</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 </dict>
 </plist>
