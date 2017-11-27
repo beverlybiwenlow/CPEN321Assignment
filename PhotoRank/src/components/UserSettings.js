@@ -16,7 +16,7 @@ class UserSettings extends Component {
     }
 
     onButtonPress() {
-        const { displayName } = this.props.userProfile;
+        const { displayName } = this.props.userProfile.user;
         this.props.updateDisplayName(displayName);
     }
 
@@ -28,7 +28,7 @@ class UserSettings extends Component {
                         label="Display Name"
                         placeholder="test@example.com"
                         onChangeText={this.onDisplayNameChange.bind(this)}
-                        value= {this.props.userProfile.displayName}
+                        value= {this.props.userProfile.user.displayName}
                     />
                 </CardSection>
                 <CardSection>
