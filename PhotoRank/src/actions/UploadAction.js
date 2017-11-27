@@ -57,7 +57,8 @@ const setUserPost = (displayName, imageURL, caption, tags, location) => {
     likers: {dummy: true},
     url: imageURL,
     user: currentUser.uid,
-    location: location
+    location: location,
+    tags: convertTags(tags)
   };
   //get a key for new post
   var newPostKey = firebase.database().ref().child('posts').push().key;
@@ -80,6 +81,19 @@ const setUserPost = (displayName, imageURL, caption, tags, location) => {
   updates[`/locationFeature/${location.toLowerCase()}/${newPostKey}`] = true;
   return firebase.database().ref().update(updates);
 };
+
+const convertTags = (tags) => {
+    if (tags === '') {
+        return null;
+    } else {
+        const tagsList = tags.replace(' ', '').split(',');
+        let obj = {};
+        tagsList.forEach((tag) => {
+            obj[tag] = true;
+        });
+        return obj;
+    }
+}
 
 export const selectImage = () => {
   return (dispatch) => {

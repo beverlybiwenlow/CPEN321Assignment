@@ -1,72 +1,96 @@
 import React, { Component } from 'react';
 import { Text, View, Image, Button, Alert, TouchableOpacity} from 'react-native';
 import firebase from 'firebase';
-import { Card, CardSection } from './common';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { Card, CardSection } from './common';
+
 class PostItem extends Component {
-  constructor(props) {
+    constructor(props) {
     super(props);
     const { currentUser } = firebase.auth();
-    this.state = {liked: this.props.post.likers[currentUser.uid], likeCountFromDB: this.props.post.likeCount};
-    // this.state = {liked: false, likeCountFromDB: this.props.post.likeCount};
+    this.state = {liked: this.props.post.likers[currentUser.uid],
+                        likeCountFromDB: this.props.post.likeCount,
+                        user : null};
 
-    //console.log(this.state.liked);
-}
+    firebase.database().ref(`/users/${this.props.post.user}`)
+        .on('value', snapshot => {
+            const userInfo = snapshot.val();
+            this.state = {liked: this.props.post.likers[currentUser.uid],
+                                likeCountFromDB: this.props.post.likeCount,
+                                user : userInfo};
+        });
+    }
 
-onButtonPress = () => {
-  const { currentUser } = firebase.auth();
-  var likeCountFromDB;
-  var likeCountRef = firebase.database().ref('posts/' + this.props.post.uid + '/likeCount');
-  likeCountRef.on('value', function(snapshot) {
-    likeCountFromDB = snapshot.val();
-  });
-  if(this.state.liked){
-    firebase.database().ref('posts/' + this.props.post.uid).update({
-      likeCount: (this.state.likeCountFromDB - 1)
+    onButtonPress = () => {
+    const { currentUser } = firebase.auth();
+    var likeCountFromDB;
+    var likeCountRef = firebase.database().ref('posts/' + this.props.post.uid + '/likeCount');
+    likeCountRef.on('value', function(snapshot) {
+        likeCountFromDB = snapshot.val();
+    });
+    if(this.state.liked){
+        firebase.database().ref('posts/' + this.props.post.uid).update({
+            likeCount: (this.state.likeCountFromDB - 1)
     });
     firebase.database().ref('posts/' + this.props.post.uid + '/likers/').set({[currentUser.uid] : false});
 
-  } else {
-    firebase.database().ref('posts/' + this.props.post.uid).update({
-      likeCount: (this.state.likeCountFromDB + 1)
+    } else {
+        firebase.database().ref('posts/' + this.props.post.uid).update({
+            likeCount: (this.state.likeCountFromDB + 1)
     });
     firebase.database().ref('posts/' + this.props.post.uid + '/likers/').set({[currentUser.uid] : true});
+    }
 
-  }
+    this.setState({
+        liked: !(this.state.liked),
+        likeCountFromDB: likeCountFromDB
+    });
 
-  this.setState({
-    liked: !(this.state.liked),
-    likeCountFromDB: likeCountFromDB
-  });
-}
+    }
 
-changeLikeState = (userLiked) => {
-  this.setState({liked: userLiked});
-}
+    changeLikeState = (userLiked) => {
+        this.setState({liked: userLiked});
+    }
+
+    renderPhotoURL(user) {
+        if (user !== null) {
+            if (user.photoURL !== undefined) {
+                return user.photoURL;
+            } else {
+                return 'https://cdn.onlinewebfonts.com/svg/img_76927.png';
+            }
+        } else {
+            return 'https://cdn.onlinewebfonts.com/svg/img_76927.png';
+        }
+    }
+
+    renderTags(tags) {
+        var tagString = '';
+        for (var tag in tags) {
+            if (tagString.length === 0) {
+                tagString += tag;
+            } else {
+                tagString += `, ${tag}`;
+            }
+        }
+        return tagString;
+    }
 
     render() {
-        //console.log(this.props);
         const { thumbnailStyle, headerContentStyle, detailsContentStyle, captionStyle, captionBoldStyle, footerContentStyle, thumbnailContainerStyle, headerTextStyle, imageStyle, likeCountStyle, likeButtonStyle, urlTextStyle, likeText } = styles;
         const { post } = this.props;
+        const { user } = this.state;
         const { currentUser } = firebase.auth();
 
-        // console.log(this.props.post.likers[currentUserID]);
         let toggle = this.state.liked ? 'UNDO LIKE' : 'CLICK TO LIKE';
         let likes = this.state.likeCountFromDB == 1 ? 'Like' : 'Likes';
-        // var likedRef = firebase.database().ref('posts/' + this.props.post.uid + '/likers/' + currentUser.uid);
-        // var userLiked;
-        // likedRef.on('value', function(snapshot) {
-        //   userLiked = snapshot.val();
-        // });
-        // this.changeLikeState(userLiked);
-
         return (
             <Card>
                 <CardSection>
                   <View style = {thumbnailContainerStyle}>
-                    <Image style={thumbnailStyle} source={{uri: "https://i.pinimg.com/736x/28/64/d5/2864d5114f4f7be2abef0fceb6ccb7c2--funny-mugshots-mug-shots.jpg"}} />
+                    <Image style={thumbnailStyle} source={{uri: this.renderPhotoURL(user) }} />
                   </View>
                   <View style = {headerContentStyle}>
                     <Text style = {headerTextStyle}>
@@ -81,7 +105,7 @@ changeLikeState = (userLiked) => {
                     <View style = {detailsContentStyle}>
                       <Icon name="md-pricetag" size={18} color="#009" />
                       <Text style = {urlTextStyle}>
-                          { post.tags || "There are no tags" }
+                          { post.tags !== undefined ? this.renderTags(post.tags) : "There are no tags" }
                       </Text>
                     </View>
                   </View>

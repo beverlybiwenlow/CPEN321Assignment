@@ -53,7 +53,7 @@ class UploadPicture extends Component {
                       source={{ uri: url }}
                       style={ image }
                     />
-                    // <Text>{ url }</Text>
+                    <Text>{ url }</Text>
                   </View>
                 )
             }

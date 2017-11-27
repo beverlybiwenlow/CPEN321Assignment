@@ -32,12 +32,14 @@ class UserProfile extends Component {
 
     renderUserHeader() {
         const {thumbnailContainerStyle,thumbnailStyle,headerContentStyle,headerTextStyle,descriptionTextStyle} = styles;
-        const displayName = this.props.userProfile.displayName || "";
+        //const displayName = this.props.userProfile.displayName || "";
+        let { displayName, photoURL }= this.props.userProfile.user;
+        photoURL === null ? photoURL = 'https://cdn.onlinewebfonts.com/svg/img_76927.png' : null;
         return (
             // <Card>
               <CardSection>
                 <View style = {thumbnailContainerStyle}>
-                  <Image style={thumbnailStyle} source={{uri: "https://i.pinimg.com/736x/28/64/d5/2864d5114f4f7be2abef0fceb6ccb7c2--funny-mugshots-mug-shots.jpg"}} />
+                  <Image style={thumbnailStyle} source={{ uri: photoURL }} />
                 </View>
                 <View style = {headerContentStyle}>
                   <Text style = {headerTextStyle}>

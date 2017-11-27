@@ -27,10 +27,10 @@ export const fetchProfile = () => {
     return (dispatch) => {
         firebase.database().ref(`/users/${currentUser.uid}`)
             .on('value', snapshot => {
-                if (snapshot.val() === null) {
-                    dispatch({ type: FETCH_PROFILE_SUCCESS, payload: "Anonymous"});
+                if (snapshot.val().displayName === null) {
+                    dispatch({ type: FETCH_PROFILE_SUCCESS, payload: {...snapshot.val(), displayName : 'Anonymous'}});
                 } else {
-                    dispatch({ type: FETCH_PROFILE_SUCCESS, payload: snapshot.val().displayName });
+                    dispatch({ type: FETCH_PROFILE_SUCCESS, payload: snapshot.val() });
                 }
             });
     };

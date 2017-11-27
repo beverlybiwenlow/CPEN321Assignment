@@ -14,7 +14,7 @@ export const fetchUserPosts = ({ uid}) => {
                 var promises = [];
                 var posts = {};
                 snapshots.forEach((key) => {
-                    promises.push(
+                    promises.unshift(
                         firebase.database().ref(`/posts/${key.key}`).once('value')
                     );
                 });

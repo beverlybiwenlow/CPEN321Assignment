@@ -32,6 +32,7 @@ class FeedList extends Component {
                 enableEmptySections
                 dataSource={this.dataSource}
                 renderRow={this.renderRow}
+                contentContainerStyle={styles.listViewStyle}
             />
         );
     }
@@ -49,6 +50,12 @@ class FeedList extends Component {
         return feed.length === 0 && clean === false ? this.renderEmptyFeed() : this.renderList();
     }
 }
+
+const styles = {
+    listViewStyle: {
+        paddingBottom: 100
+    }
+};
 
 const mapStateToProps = (state) => {
     const feed = _.map(state.feed.posts, (val, uid) => {

@@ -28,7 +28,6 @@ export const loginUser = ({ email, password }) => {
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(user => loginUserSuccess(dispatch, user))
             .catch((error) => {
-                console.log(error);
                 firebase.auth().createUserWithEmailAndPassword(email, password)
                     .then(user => loginUserSuccess(dispatch, user))
                     .catch(() => loginUserFail(dispatch));
@@ -37,11 +36,9 @@ export const loginUser = ({ email, password }) => {
 };
 
 export const loginWithFacebook = (accessTokenData) => {
-    console.log('token', accessTokenData)
     return (dispatch) => {
         const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData);
         firebase.auth().signInWithCredential(credential).then(function(user) {
-            console.log('user', user);
             updateDatabase(user.displayName, user.photoURL);
             loginUserSuccess(dispatch, user);
         }).catch((error) => {
@@ -53,7 +50,6 @@ export const loginWithFacebook = (accessTokenData) => {
 export const checkInitialAuth = () => {
     return (dispatch) => {
         const user = firebase.auth().currentUser;
-        console.log('user', user);
         if (user) {
             loginUserSuccess(dispatch, user);
         }

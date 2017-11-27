@@ -7,7 +7,7 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    displayName: '',
+    user: '',
     updateButtonText: 'Save Changes',
     userPosts: {}
 };
@@ -15,9 +15,9 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE , action) => {
     switch(action.type) {
         case FETCH_PROFILE_SUCCESS:
-            return {...state, displayName : action.payload};
+            return {...state, user : action.payload};
         case DISPLAY_NAME_CHANGED:
-            return {...state, displayName: action.payload};
+            return {...state, user: {...user, displayName: action.payload }};
         case UPDATE_PROFILE_SUCCESS:
             return {...state, updateButtonText: 'Profile Updated!'}
         case UPDATE_BUTTON_REVERT:
