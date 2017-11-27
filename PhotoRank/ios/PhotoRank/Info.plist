@@ -58,7 +58,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Take a photo for us</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select an existing photo for us</string>
 	<key>UIAppFonts</key>

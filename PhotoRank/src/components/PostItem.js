@@ -3,6 +3,7 @@ import { Text, View, Image, Button, Alert, TouchableOpacity} from 'react-native'
 import firebase from 'firebase';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Ionicons';
+import FitImage from 'react-native-fit-image';
 
 import { Card, CardSection } from './common';
 
@@ -111,7 +112,10 @@ class PostItem extends Component {
                   </View>
                 </CardSection>
                 <CardSection>
-                  <Image style={imageStyle} source={{ uri: post.url }} />
+                  <FitImage
+                    source={{ uri: post.url }}
+                    style={imageStyle}
+                  />
                 </CardSection>
                 <CardSection>
                   <View flexDirection="row" alignItems="center">
@@ -180,9 +184,7 @@ const styles = {
     marginRight: 10
   },
   imageStyle: {
-    height: 300,
-    flex: 1,
-    width: null
+    borderRadius: 20,
   },
   likeButtonStyle: {
     padding: 5,

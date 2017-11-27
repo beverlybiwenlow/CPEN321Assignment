@@ -37,6 +37,7 @@ class UploadPicture extends Component {
   render() {
     const { container, image, upload } = styles;
     const { url } = this.props.uploadState;
+    console.log(this.props.uploadState);
     return (
       <View style={ container }>
         {
@@ -48,12 +49,13 @@ class UploadPicture extends Component {
                 return <ActivityIndicator />
               default:
                 return (
-                  <View>
+                  <View >
+                    <Text></Text>
                     <Image
                       source={{ uri: url }}
                       style={ image }
                     />
-                    <Text>{ url }</Text>
+                    <Text></Text>
                   </View>
                 )
             }
@@ -74,6 +76,7 @@ const styles = {
   },
   image: {
     height: 200,
+    width: 500,
     resizeMode: 'contain',
   },
   uploadButton: {
