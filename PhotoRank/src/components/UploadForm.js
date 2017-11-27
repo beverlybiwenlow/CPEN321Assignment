@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, Text, KeyboardAvoidingView } from 'react-native';
 import Geocoder from 'react-native-geocoder';
 
 import { Card, CardSection, Input, Button, Spinner } from './common';
@@ -47,6 +47,7 @@ class UploadForm extends Component {
         const { caption, tags } = this.props.uploadState;
 
         return (
+          <KeyboardAvoidingView behaviour="padding">
             <Card>
                 <CardSection>
                     <Input
@@ -70,6 +71,8 @@ class UploadForm extends Component {
                     </Button>
                 </CardSection>
             </Card>
+          <View style={{ height: 60 }} />
+          </KeyboardAvoidingView>
         );
     }
 }

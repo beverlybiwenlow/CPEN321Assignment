@@ -13,6 +13,10 @@ class UploadPicture extends Component {
     this.state = {};
   }
 
+  componentWillMount() {
+    this.props.selectImage();
+  }
+  
   renderUploadForm() {
       const { selectedImage } = this.props.uploadState;
       const { uploadButton, uploadForm } = styles;
@@ -22,14 +26,6 @@ class UploadPicture extends Component {
               <View style= {uploadForm}>
                   <UploadForm />
               </View>
-          );
-      } else {
-          return (
-              <TouchableOpacity onPress={ () => this.props.selectImage() }>
-                <Text style={ uploadButton }>
-                  Tap here to upload a picture
-                </Text>
-              </TouchableOpacity>
           );
       }
   }
