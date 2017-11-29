@@ -3,6 +3,7 @@ import { View, Text, ListView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import firebase from 'firebase';
+import Icon from 'react-native-vector-icons/Feather';
 
 import FeedList from './FeedList';
 import { fetchProfile, fetchUserPosts } from '../actions';
@@ -30,10 +31,29 @@ class UserProfile extends Component {
         });
     }
 
+    renderStarCount(starCount) {
+        const { iconStyle } = styles;
+        if (starCount !== null) {
+            if (starCount > 0) {
+                return (
+                    <Text>
+                        {starCount > 1 ? starCount : null}
+                        <Icon
+                                    name="star"
+                                    size={20}
+                                    style={iconStyle}
+                                />
+                    </Text>);
+            }
+        }
+    }
     renderUserHeader() {
-        const {thumbnailContainerStyle,thumbnailStyle,headerContentStyle,headerTextStyle,descriptionTextStyle} = styles;
-        //const displayName = this.props.userProfile.displayName || "";
-        let { displayName, photoURL }= this.props.userProfile.user;
+        const {thumbnailContainerStyle,
+                    thumbnailStyle,
+                    headerContentStyle,
+                    headerTextStyle,
+                    descriptionTextStyle, displayNameStyle} = styles;
+        let { displayName, photoURL, starCount }= this.props.userProfile.user;
         photoURL === null ? photoURL = 'https://cdn.onlinewebfonts.com/svg/img_76927.png' : null;
         return (
             // <Card>
@@ -43,7 +63,8 @@ class UserProfile extends Component {
                 </View>
                 <View style = {headerContentStyle}>
                   <Text style = {headerTextStyle}>
-                      { displayName }
+                      { `${displayName}   ` }
+                      { this.renderStarCount(starCount) }
                   </Text>
                   <Text style = {descriptionTextStyle}>
                       {'Profession: Amateur Photographer'}
@@ -96,7 +117,10 @@ const styles = {
     marginRight: 5,
     fontSize: 12,
     fontFamily: 'OpenSans-Light'
-  }
+},
+iconStyle: {
+    alignSelf: 'flex-end'
+}
 }
 
 const mapStateToProps = (state) => {

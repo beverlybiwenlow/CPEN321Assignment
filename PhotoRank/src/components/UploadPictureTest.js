@@ -13,6 +13,10 @@ class UploadPicture extends Component {
     this.state = {};
   }
 
+  componentWillMount() {
+    this.props.selectImage();
+  }
+
   renderUploadForm() {
       const { selectedImage } = this.props.uploadState;
       const { uploadButton, uploadForm } = styles;
