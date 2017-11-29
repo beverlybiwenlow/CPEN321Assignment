@@ -1547,7 +1547,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.PhotoRank34356;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.PhotoRank34356;
 				PRODUCT_NAME = PhotoRank;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1579,7 +1579,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.PhotoRank34356;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.PhotoRank34356;
 				PRODUCT_NAME = PhotoRank;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

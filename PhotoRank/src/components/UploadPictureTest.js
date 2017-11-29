@@ -27,14 +27,6 @@ class UploadPicture extends Component {
                   <UploadForm />
               </View>
           );
-      } else {
-          return (
-              <TouchableOpacity onPress={ () => this.props.selectImage() }>
-                <Text style={ uploadButton }>
-                  Tap here to upload a picture
-                </Text>
-              </TouchableOpacity>
-          );
       }
   }
 
