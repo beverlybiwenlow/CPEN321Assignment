@@ -35,6 +35,15 @@ export const loginUser = ({ email, password }) => {
     };
 };
 
+export const logoutUser = () => {
+    return (dispatch) => {
+        firebase.auth().signOut()
+            .then(() => {
+                Actions.reset("login");
+            });
+    }
+}
+
 export const loginWithFacebook = (accessTokenData) => {
     return (dispatch) => {
         const credential = firebase.auth.FacebookAuthProvider.credential(accessTokenData);

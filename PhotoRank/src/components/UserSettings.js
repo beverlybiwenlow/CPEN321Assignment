@@ -8,7 +8,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 import { Card, CardSection, Input, Button } from './common';
-import { displayNameChanged, updateDisplayName } from '../actions';
+import { displayNameChanged, updateDisplayName, logoutUser } from '../actions';
 
 class UserSettings extends Component {
     onDisplayNameChange(text) {
@@ -18,6 +18,10 @@ class UserSettings extends Component {
     onButtonPress() {
         const { displayName } = this.props.userProfile.user;
         this.props.updateDisplayName(displayName);
+    }
+
+    onLogoutButtonPress() {
+        this.props.logoutUser();
     }
 
     render() {
@@ -48,14 +52,17 @@ class UserSettings extends Component {
                           } else {
                             AccessToken.getCurrentAccessToken().then(
                               (data) => {
-                                  //this.props.loginWithFacebook(data.accessToken.toString())
-                                //alert(data.accessToken.toString())
                               }
                             )
                           }
                         }
                       }
                       onLogoutFinished={() => Actions.reset("login")}/>
+                </CardSection>
+                <CardSection>
+                    <Button onPress={this.onLogoutButtonPress.bind(this)}>
+                        Logout
+                    </Button>
                 </CardSection>
             </Card>
         );
@@ -69,4 +76,4 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-    displayNameChanged, updateDisplayName })(UserSettings);
+    displayNameChanged, updateDisplayName, logoutUser })(UserSettings);
