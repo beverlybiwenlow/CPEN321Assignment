@@ -40,7 +40,7 @@ class UploadForm extends Component {
     onButtonPress() {
         const { displayName } = this.props.user.user;
         const { url, caption, tags, location } = this.props.uploadState;
-        this.props.uploadToDatabase(displayName, url, caption, tags.toLowerCase(), location);
+        this.props.uploadToDatabase(displayName, url, caption, tags.toLowerCase(), 'my.bad.key');
     }
 
     render() {

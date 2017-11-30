@@ -2,6 +2,7 @@ import firebase from 'firebase';
 import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
+import firebaseKeyEncode from 'firebase-key-encode';
 
 import { Actions } from 'react-native-router-flux';
 
@@ -50,6 +51,7 @@ const uploadImage = (uri, mime = 'application/octet-stream') => {
 
 const setUserPost = (displayName, imageURL, caption, tags, location) => {
   const { currentUser } = firebase.auth();
+  var escapedLocation = firebaseKeyEncode.encode(location);
   var postData = {
     caption: caption,
     displayName: displayName,
@@ -57,7 +59,7 @@ const setUserPost = (displayName, imageURL, caption, tags, location) => {
     likers: {dummy: true},
     url: imageURL,
     user: currentUser.uid,
-    location: location,
+    location: escapedLocation,
     tags: convertTags(tags)
   };
   //get a key for new post
@@ -78,7 +80,9 @@ const setUserPost = (displayName, imageURL, caption, tags, location) => {
   }
 
   // assign post to location
-  updates[`/locationFeature/${location.toLowerCase()}/${newPostKey}`] = true;
+ if (location !== null || location == undefined) {
+     updates[`/locationFeature/${escapedLocation.toLowerCase()}/${newPostKey}`] = true;
+ }
   return firebase.database().ref().update(updates);
 };
 

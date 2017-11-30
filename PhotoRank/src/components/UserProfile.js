@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Feather';
+import firebaseKeyEncode from 'firebase-key-encode';
 
 import FeedList from './FeedList';
 import { fetchProfile, fetchUserPosts } from '../actions';

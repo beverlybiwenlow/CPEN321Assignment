@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FitImage from 'react-native-fit-image';
+import firebaseKeyEncode from 'firebase-key-encode';
 
 import { Card, CardSection } from './common';
 
@@ -100,7 +101,7 @@ class PostItem extends Component {
                     <View style = {detailsContentStyle}>
                       <Icon name="md-pin" size={16} color="#900" />
                       <Text style = {urlTextStyle}>
-                          { post.location || "There is no location" }
+                          { firebaseKeyEncode.decode(post.location) || "There is no location" }
                       </Text>
                     </View>
                     <View style = {detailsContentStyle}>

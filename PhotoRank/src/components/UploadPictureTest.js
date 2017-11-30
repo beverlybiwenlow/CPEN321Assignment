@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, AppRegistry } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
 
 import { selectImage } from '../actions';
 import UploadForm from './UploadForm';
@@ -15,6 +16,18 @@ class UploadPicture extends Component {
 
   componentWillMount() {
     this.props.selectImage();
+  }
+
+  componentWillReceiveProps (nextProps) {
+      if (this.props.enterTime !== nextProps.enterTime) {
+         this.props.selectImage();
+      }
+  }
+
+  static onEnter = () => {
+      Actions.refresh({
+          enterTime: new Date()
+      });
   }
 
   renderUploadForm() {

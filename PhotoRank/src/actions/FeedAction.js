@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import firebaseKeyEncode from 'firebase-key-encode';
 
 import {
     RESET_FEED,
@@ -54,7 +55,8 @@ export const fetchTagPosts = ({ tag }) => {
 export const fetchLocationPosts = ({ location }) => {
     return (dispatch) => {
         dispatch({ type: RESET_FEED });
-        firebase.database().ref(`/locationFeature/${location.toLowerCase()}`)
+        var escapedLocation = firebaseKeyEncode.encode(location);
+        firebase.database().ref(`/locationFeature/${escapedLocation.toLowerCase()}`)
             .on('value', snapshots => {
                 var promises = [];
                 var posts = {};
