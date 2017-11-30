@@ -5,6 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FitImage from 'react-native-fit-image';
 import firebaseKeyEncode from 'firebase-key-encode';
+import Feather from 'react-native-vector-icons/Feather';
 
 import { Card, CardSection } from './common';
 
@@ -96,7 +97,7 @@ class PostItem extends Component {
                   </View>
                   <View style = {headerContentStyle}>
                     <Text style = {headerTextStyle}>
-                        { post.displayName }
+                        { `${post.displayName}` }
                     </Text>
                     <View style = {detailsContentStyle}>
                       <Icon name="md-pin" size={16} color="#900" />

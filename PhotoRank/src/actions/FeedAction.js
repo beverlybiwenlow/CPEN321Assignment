@@ -6,11 +6,16 @@ import {
     FETCH_USER_POSTS_SUCCESS
 } from './types';
 
+var single_refs = null;
+
 export const fetchUserPosts = ({ uid}) => {
     // const { currentUser } = firebase.auth();
+    console.log(`fetching posts for ${uid}`);
     return (dispatch) => {
         dispatch({ type: RESET_FEED });
-        firebase.database().ref(`/userPosts/${uid}`)
+        single_refs !== null ? single_refs.off() : null;
+        single_refs = firebase.database().ref(`/userPosts/${uid}`);
+        single_refs
             .on('value', snapshots => {
                 var promises = [];
                 var posts = {};
@@ -23,6 +28,7 @@ export const fetchUserPosts = ({ uid}) => {
                     snapshots.forEach((snapshot) => {
                         posts[snapshot.key] = snapshot.val();
                     });
+                    console.log('fetch user posts');
                     dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: posts});
                 });
             });
@@ -32,8 +38,9 @@ export const fetchUserPosts = ({ uid}) => {
 export const fetchTagPosts = ({ tag }) => {
     return (dispatch) => {
         dispatch({ type: RESET_FEED });
-
-        firebase.database().ref(`/tags/${tag}`)
+        single_refs !== null ? single_refs.off() : null;
+        single_refs = firebase.database().ref(`/tags/${tag}`);
+        single_refs
             .on('value', snapshots => {
                 var promises = [];
                 var posts = {};
@@ -46,6 +53,7 @@ export const fetchTagPosts = ({ tag }) => {
                     snapshots.forEach((snapshot) => {
                         posts[snapshot.key] = snapshot.val();
                     });
+                    console.log('fetch tag posts');
                     dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: posts});
                 });
             });
@@ -56,7 +64,10 @@ export const fetchLocationPosts = ({ location }) => {
     return (dispatch) => {
         dispatch({ type: RESET_FEED });
         var escapedLocation = firebaseKeyEncode.encode(location);
-        firebase.database().ref(`/locationFeature/${escapedLocation.toLowerCase()}`)
+        var query = `/locationFeature/${escapedLocation.toLowerCase()}`
+        single_refs !== null ? single_refs.off() : null;
+        single_refs = firebase.database().ref(query);
+        single_refs
             .on('value', snapshots => {
                 var promises = [];
                 var posts = {};
@@ -69,6 +80,7 @@ export const fetchLocationPosts = ({ location }) => {
                     snapshots.forEach((snapshot) => {
                         posts[snapshot.key] = snapshot.val();
                     });
+                    console.log('fetch location posts');
                     dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: posts});
                 });
             });
@@ -76,16 +88,19 @@ export const fetchLocationPosts = ({ location }) => {
 };
 
 export const fetchPosts = () => {
+    console.log('fetching all posts');
     return (dispatch) => {
         dispatch({ type: RESET_FEED });
-        var topPosts = firebase.database().ref('/posts').orderByChild('likeCount').limitToFirst(50);
-        topPosts.on('value', snapshots => {
+        single_refs !== null ? single_refs.off() : null;
+        single_refs = firebase.database().ref('/posts').orderByChild('likeCount').limitToFirst(50);
+        single_refs.on('value', snapshots => {
             Object.filter = (obj, predicate) =>
             Object.keys(obj)
             .filter( key => predicate(obj[key]) )
             .reduce( (res, key) => (res[key] = obj[key], res), {} );
             var results = snapshots.val();
             var filteredResults = Object.filter(results, result => result.user !== undefined);
+            console.log('fetch posts');
             dispatch({ type: FETCH_USER_POSTS_SUCCESS, payload: filteredResults });
         });
     };

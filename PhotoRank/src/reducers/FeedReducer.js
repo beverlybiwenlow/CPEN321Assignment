@@ -9,6 +9,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE , action) => {
+    console.log('feed reducer', action);
     switch(action.type) {
         case RESET_FEED:
             return INITIAL_STATE;
